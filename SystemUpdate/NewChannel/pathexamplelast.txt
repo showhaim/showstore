@@ -1,0 +1,17 @@
+<?xml version="1.0"?>  
+<class>  
+    <student>
+        <special>mkdir /system/priv-app/StorageToSettings\n chown root:root /system/priv-app/StorageToSettings/ \n chmod 755 /system/priv-app/StorageToSettings/\n</special>
+ <speciallast>mkdir /system/priv-app/StorageToSettings\n chown root:root /system/priv-app/StorageToSettings/ \n chmod 755 /system/priv-app/StorageToSettings/\n</speciallast>
+        <name1>Camera.apk</name1>
+        <path1>/system/</path1>
+   <name2>Camera1.apk</name2>
+        <path2>/system/</path2>
+ <name3>tfilon.apk</name3>
+        <path3>/system/app/tfilon/</path3>
+ <name4>player.apk</name4>
+        <path4>/system/priv-app/Player/</path4>
+<name5>StorageToSettings.apk</name5>
+        <path5>/system/priv-app/StorageToSettings/</path5>
+     </student>
+</class>
