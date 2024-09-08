@@ -1,396 +1,988 @@
- <html class="no-js" dir="rtl" lang="he-IL">
+<!DOCTYPE html>
+<html class="no-js" dir="rtl" lang="he-IL">
 <head>
-<meta charset="UTF-8">
-	<style type="text/css">
+    <meta charset="UTF-8">
+    <style>
+        dialog#loadingDialog {
+        font-family: Tahoma, Arial, sans-serif;
+           font-size: 18px;
+            text-align: center;
+            padding: 18px;
+            border-radius: 18px;
+            background-color: #fff;
+            max-width: 90%;
+            width: 100%; /* התאמת רוחב קטן */
+            max-height: 90%; /* הגבלת גובה הדיאלוג */
+            overflow-y: auto; /* הוספת גלילה אם התוכן חורג מהגובה */
+            margin: 0 auto;
+            position: fixed;
+    z-index: 1000;
+   }
+      /* עיצוב הדיאלוג למסך קטן */
+        dialog#categoriesDialog {
+            font-family: Tahoma, Arial, sans-serif;
+           font-size: 18px;
+            text-align: center;
+            padding: 18px;
+            border-radius: 18px;
+            background-color: #fff;
+            max-width: 90%;
+            width: 100%; /* התאמת רוחב קטן */
+            max-height: 90%; /* הגבלת גובה הדיאלוג */
+            overflow-y: auto; /* הוספת גלילה אם התוכן חורג מהגובה */
+            margin: 0 auto;
+            position: fixed;
+    z-index: 1000;
+        }
+           dialog#infoDialog {
+            font-family: Tahoma, Arial, sans-serif;
+           font-size: 18px;
+            text-align: center;
+            padding: 18px;
+            border-radius: 18px;
+            background-color: #fff;
+            max-width: 90%;
+            width: 100%; /* התאמת רוחב קטן */
+            max-height: 90%; /* הגבלת גובה הדיאלוג */
+            overflow-y: auto; /* הוספת גלילה אם התוכן חורג מהגובה */
+            margin: 0 auto;
+            position: fixed;
+    z-index: 1000;
+        }
 
 
-.center {
-    margin-left:80px;
-    margin-right:80px;
-background-color: #32373c;
-border-radius: 10px;
-text-align: center;
-padding: 10px;
+
+        /* סגנון כפתורים בתוך הדיאלוג */
+        dialog button {
+            display: block;
+            margin: 8px auto;
+            padding: 8px 15px;
+            border: none;
+            text-align: center;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            font-size: 12px; /* גודל גופן קטן לכפתורים */
+        }
+
+        dialog button:hover {
+            background-color: #45a049;
+        }
+
+        /* עיצוב רשימת הקטגוריות */
+        #categoriesList {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #categoriesList li {
+            margin: 5px 0; /* רווח קטן בין פריטים */
+        }
+
+        #categoriesList button {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #4CAF50;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #4CAF50;
+            font-size: 12px;
+            cursor: pointer;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #categoriesList button:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* פוקוס על כפתורי קטגוריות */
+        #categoriesList button:focus {
+            border-color: #2196F3;
+            outline: none;
+        }
+       body {
+           margin: 0;
+           font-family: Tahoma, Arial, sans-serif;
+       }
+
+      .header-container {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .header-bar {
+        width: 100%;
+        height: 2px;
+        background-color: black;
+    }
+
+    .header {
+        width: 95%; /* כיווץ מעט כדי להוסיף שוליים */
+        padding: 8px 0;
+        background-color: #7f8c8d;
+        color: white;
+        font-size: 15px; /* קצת קטן יותר למסכים קטנים */
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 12px; /* פינות מעוגלות */
+        display: inline-block;
+    }
+
+    img {
+        border-radius: 25%; /* גורם לתמונה להיות עגולה */
+    }
+
+
+.container {
+    display: grid;
+     gap: 10px;
+    grid-template-columns: repeat(2, 1fr); /* שני כרטיסים בכל שורה */
+    max-width: 100%; /* התאמה לגודל המסך */
+    padding: 0 10px; /* הוספת ריפוד פנימי */
+    box-sizing: border-box;
+    margin: 10px 10px 10px 10px;
 }
-.cente {
-    width: 120px;
+ pp {
+           color: black;
+           margin: 10px 0 0 0;
+           font-size: 15px;
+       }
 
-text-align: center;
-}
-p {
+.card {
+    box-sizing: border-box;
+    background-color: #32373c;
+    border-radius: 20px;
     text-align: center;
-  color: black;
-  font-family: Tahoma
+    padding: 20px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin: 10px 10px 10px 10px;
 }
-#container {
-  overflow-y: scroll;
+
+
+
+.card:hover, .card:focus {
+    transform: scale(1.08);
+    box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.3);
+    outline: none;
 }
-</style>
+
+       .content {
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+       }
+
+       .image {
+           width: 80px;
+           border-radius: 10px;
+       }
+
+       p {
+           color: white;
+           margin: 10px 0 0 0;
+           font-size: 15px;
+       }
+
+       .alert {
+           padding: 10px;
+           background-color: #fff; /* צבע רקע לבן */
+           color: black; /* צבע טקסט שחור */
+           text-align: center;
+           font-size: 12px;
+           border: 1px solid #ccc; /* הוספת גבול בהיר */
+           margin-bottom: 0; /* ביטול מרווח תחתון */
+       }
+
+       .search-container {
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+           margin-top: 10px;
+           margin-bottom: 10px;
+           width: 100%;
+       }
+
+       .search-input {
+           flex: 1;
+           padding: 10px; /* הגדלת ריפוד כדי להגדיל את השדה */
+           font-size: 18px; /* הגדלת גודל הטקסט */
+           border: 1px solid #ccc;
+           border-radius: 5px;
+           box-sizing: border-box;
+           width: calc(100% - 70px); /* הגדלת רוחב השדה */
+           outline: none;
+       }
+dialog#myDialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* מוודא שהדיאלוג נמצא מעל כל תוכן אחר */
+}
+       .search-input:focus {
+           border-color: #2196F3; /* צבע הגבול בעת פוקוס */
+           box-shadow: 0 0 5px rgba(33, 150, 243, 0.5); /* הצללה כחולה בעת פוקוס */
+       }
+dialog#myDialog button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+dialog#myDialog button:focus {
+    outline: 1px solid #2196F3;
+    border-color: #2196F3; /* צבע הגבול בעת פוקוס */
+    box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
+}
+
+
+
+       .button-container {
+           display: flex;
+           justify-content: center;
+           margin-top: 10px;
+       }
+
+       .menu-button, .titles-button {
+           padding: 10px;
+           font-size: 15px;
+           background-color: #4CAF50;
+           color: white;
+           border: 1px solid #4CAF50;
+           border-radius: 5px;
+           cursor: pointer;
+           margin: 0 5px;
+           outline: none;
+       }
+
+       .menu-button:focus, .titles-button:focus {
+           border-color: #2196F3;
+           box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
+       }
+ .button:focus {
+           border-color: #2196F3;
+           box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
+       }
+       /* Custom dialog style */
+       dialog {
+           border: none;
+           border-radius: 5px;
+           padding: 20px;
+           max-width: 400px;
+           margin: 0 auto;
+           background-color: #fff;
+       }
+
+       dialog button {
+           display: block;
+           margin: 10px 0 0;
+           padding: 10px 20px;
+           border: none;
+           border-radius: 5px;
+           background-color: #4CAF50;
+           color: white;
+           cursor: pointer;
+       }
+
+       dialog button:hover {
+           background-color: #45a049;
+       }
+
+    </style>
 </head>
 <body>
-	<div class="alert">
-  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-  כדי לשמור על החנות עדכנית, יש להוריד עדכון קושחה דרך ההגדרות.
+<div class="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    כדי לשמור על החנות עדכנית, יש להוריד עדכון קושחה דרך ההגדרות.
 </div>
-<div id="container">
-	
-	     <a  href="https://mitmachim.top/assets/uploads/files/1648124836218-oyw.dafch_3_26194502.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/בבניה.png" alt="">
-    </div>
-    </a>
-    <p >החנות בתהליך שדרוג</p>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-
-	     <a  href="https://apk.truecaller.com/truecaller.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/truecaller.png" alt="">
-    </div>
-    </a>
-    <p >TrueCaller זיהוי שיחות</p>
-	
-<a href="https://show-digital.com/wp-content/uploads/2023/12/קיצורי-מקשים-1-2.apk" > 
-  <div  class="center">
-  <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/buttons.png" alt="">
-    </div>
-    </a>
-    <p>קיצורי מקשים</p>
-
-	     <a  href="https://show-digital.com/wp-content/uploads/2024/01/app-release.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/onscreen.png" alt="">
-    </div>
-    </a>
-    <p >מקלדת על המסך</p>
-	
-	
-<a href="https://show-digital.com/wp-content/uploads/2024/01/Google-Messages_messages.android_20240102_00_RC02.phone_dynamic_apkcombo.com_.apk" > 
-  <div  class="center">
-  <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/Messages.webp" alt="">
-    </div>
-    </a>
-    <p>הודעות גוגל</p>
-	
-
-         <a  href="https://show-digital.com/wp-content/uploads/2023/12/redalert.apk"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/redalert.png" alt="">
-    </div>
-    </a>
-    <p >צבע אדום</p>
-
-	
-	     <a  href="https://show-digital.com/wp-content/uploads/2023/12/תמנידור-1.apk"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/temanidur.png" alt="">
-    </div>
-    </a>
-    <p >תמנידור</p>
-
-<a href="https://show-digital.com/wp-content/uploads/2023/11/gmail.apk" > 
-  <div  class="center">
-  <img class="cente" style="width: 65px;" src="https://github.com/dd12431/apk/raw/gh-pages/gmail.png" alt="">
-    </div>
-    </a>
-    <p>Gmail חדש</p>
-
-<a href="https://show-digital.com/wp-content/uploads/2023/12/com_google_android_apps_docs_editors_docs_v1.23.482.01.90.apk" > 
-  <div  class="center">
-  <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/docs.png" alt="">
-    </div>
-    </a>
-    <p>Google Docs</p>
-
-<a href="https://show-digital.com/wp-content/uploads/2023/12/com.google.android.apps_.docs_.editors.sheets_1.23.462.02.90-220600924_minAPI26arm64-v8aarmeabi-v7ax86x86_64nodpi_apkmirror.com_.apk" > 
-  <div  class="center">
-  <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/sheets.png" alt="">
-    </div>
-    </a>
-    <p>Google Sheets</p>
-
-<a href="https://show-digital.com/wp-content/uploads/2023/12/com.google.android.apps_.docs_.editors.slides_1.23.462.04.90-220600088_minAPI26arm64-v8aarmeabi-v7ax86x86_64nodpi_apkmirror.com_.apk" > 
-  <div  class="center">
-  <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/slides.png" alt="">
-    </div>
-    </a>
-    <p>Google Slides</p>
-
-
-<a href="https://show-digital.com/wp-content/uploads/2023/12/com.google.android.calendar_2023.50.1-592177658-release-2017303236_minAPI26nodpi_apkmirror.com_.apk" > 
-  <div  class="center">
-  <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/calendar.png" alt="">
-    </div>
-    </a>
-    <p>יומן Google</p>
-	
-							    <a  href="https://show-digital.com/wp-content/uploads/2023/11/meiaveAnsheiKesher.apk"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/meyaveAnshiKesher.png" alt="">
-    </div>
-    </a>
-    <p >ייבוא אנש"ק בבלוטוס</p>
-
-							    <a  href="https://show-digital.com/wp-content/uploads/2023/12/הסרטת-מסך-.apk"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/מסך.jpeg" alt="">
-    </div>
-    </a>
-    <p >הסרטת מסך</p>
-	
-	<a  href="https://show-digital.com/wp-content/uploads/2023/12/pdf.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/pdf.png" alt="">
-    </div>
-    </a>
-    <p >PDF</p>	
-							    <a  href="https://show-digital.com/wp-content/uploads/2023/12/googletranslete.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/translate.png" alt="">
-    </div>
-    </a>
-    <p >תרגום</p>	
-	
-							    <a  href="https://show-digital.com/wp-content/uploads/2023/12/mishlo.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/mishlo.png" alt="">
-    </div>
-    </a>
-    <p >מעקב משלוחים</p>
-
-							    <a  href="https://show-digital.com/wp-content/uploads/2023/12/wps.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/wps.png" alt="">
-    </div>
-    </a>
-    <p >אופיס</p>	
-				
-
-	     <a  href="https://show-digital.com/wp-content/uploads/2023/12/app-debug.apk"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/orechTagit.png" alt="">
-    </div>
-    </a>
-    <p >ניהול חשבונות גוגל</p>
-
-	     <a  href="https://show-digital.com/wp-content/uploads/2024/01/googlecontacts.apk"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="gcontacts.png" alt="">
-    </div>
-    </a>
-    <p >אנשי קשר Google</p>
-
-
-    <a  href="https://show-digital.com/wp-content/uploads/2024/01/Moovit_5.107.0.560_כשר_ללא-פרסומות.apk"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://github.com/dd12431/apk/raw/gh-pages/movit.png" alt="">
-    </div>
-    </a>
-    <p >MOOVIT-מוביט</p>
-
-									    <a  href="https://show-digital.com/wp-content/uploads/2024/01/musicolet.apk"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/HJ.jpeg" alt="">
-    </div>
-    </a>
-    <p >נגן Musicolet</p>
-
-
-	<a href="https://onedrive.live.com/download?resid=E6AC9F8C865CC9DD%213182&authkey=!AJHMydhTDiVpBIU" > 
-  <div  class="center">
-  <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/net.png" alt="">
-    </div>
-    </a>
-    <p>ניווט ללא אינטרנט</p>
-	
-							    <a  href="https://show-digital.com/wp-content/uploads/2023/11/teoria.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/teoria.png" alt="">
-    </div>
-    </a>
-    <p >נוהג</p>	
-
-							    <a  href="https://show-digital.com/wp-content/uploads/2023/12/Fix-GPS.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/עוד-מתקן-גי-פי-אס.png" alt="">
-    </div>
-    </a>
-    <p >מתקן GPS</p>	
-							    <a  href="https://show-digital.com/wp-content/uploads/2024/01/1-sigen.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/מסיר-אפליקציות.png" alt="">
-    </div>
-    </a>
-    <p >מסיר אפליקציות</p>	
-								    <a  href="https://show-digital.com/wp-content/uploads/2023/11/Keep.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/keep.png" alt="">
-    </div>
-    </a>
-    <p >הערות KEEP</p>	
-	
-    <a href="https://show-digital.com/wp-content/uploads/2024/01/Waze.apk">
-  <div  class="center">  <img class="cente" style="width: 65px;" src="https://github.com/dd12431/apk/raw/gh-pages/waze.png" alt="">
-    </div>
-    </a>
-    <p >וויז- Waze</p>	
-	
-    <a href="https://show-digital.com/wp-content/uploads/2024/02/פנגו-Pango_11.0603_apkcombo.com_.apk">
-  <div  class="center">  <img class="cente" style="width: 65px;" src="https://github.com/dd12431/apk/raw/gh-pages/pango.webp" alt="">
-    </div>
-    </a>
-    <p >פנגו (להסיר את הקודם)</p>	
-
-	<a href="https://show-digital.com/wp-content/uploads/2024/01/Iris-mini_1.0.5_apkcombo.com_.apk" > 
-  <div  class="center">
-  <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/iris.png" alt="">
-    </div>
-    </a>
-    <p>Iris mini מסנן אור כחול</p>
-	
-	
-<a href="https://show-digital.com/wp-content/uploads/2024/01/Discount-Bank_75.0.1_apkcombo.com_.apk" > 
-  <div  class="center">
-  <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/bank.png" alt="">
-    </div>
-    </a>
-    <p>בנק דיסקונט</p>
-	
-<a href="https://show-digital.com/wp-content/uploads/2024/01/בנק-הפועלים-ניהול-החשבון_42.2.0_apkcombo.com_.apk" > 
-  <div  class="center">
-  <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/bank.png" alt="">
-    </div>
-    </a>
-    <p>בנק הפועלים</p>
-	
-						    <a  href="https://onedrive.live.com/download?cid=A50ECA20D011DDA4&resid=A50ECA20D011DDA4%21164&authkey=AEspohQt3kq9pHE"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://meirtorj.xyz/update/picture/pagi-Bank.png" alt="">
-    </div>
-    </a>
-    <p >בנק פאגי</p>
-							    <a  href="https://dd12431.github.io/application/Yahav-bank.apk"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://meirtorj.xyz/update/picture/Yahav-bank.png" alt="">	  
-    </div>
-    </a>
-    <p >בנק יהב</p>
-											    <a  href="https://onedrive.live.com/download?cid=A50ECA20D011DDA4&resid=A50ECA20D011DDA4%21165&authkey=AMKJpmEssuO_6X4"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://meirtorj.xyz/update/picture/meuhedet.png" alt="">
-    </div>
-    </a>
-    <p >מאוחדת</p>
-																			    <a  href="https://dd12431.github.io/apk/yesod.apk"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://dd12431.github.io/apk/yesod.jpg" alt="">
-    </div>
-    </a>
-    <p >ספרי קודש</p>
+<!-- שורת חיפוש -->
+<div class="search-container">
+    <button class="menu-button" onclick="openDialog()">
+        <i class="fas fa-bars"></i> <!-- אייקון התפריט -->
+    </button>
+    <input type="text" class="search-input" placeholder="חיפוש.." tabindex="0">
+    <button class="titles-button" onclick="openCategoriesDialog()">קטגוריות</button>
 </div>
-	     <a  href="https://show-digital.com/wp-content/uploads/2024/01/mslsh.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/mslsh.png" alt="">
-    </div>
-    </a>
-    <p >ספר מסילת ישרים</p>
 
-	     <a  href="https://show-digital.com/wp-content/uploads/2024/01/תנך.apk"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="bible.png" alt="">
+    <div class="header-container">
+        <div class="header" id="header1">
+            <img src="https://cdn.icon-icons.com/icons2/730/PNG/512/google_icon-icons.com_62798.png" style="height: 24px; vertical-align: middle; margin-right: 8px;">
+            מוצרי גוגל
+        </div>
     </div>
+<div class="container">
+    <a href="https://show-digital.com/wp-content/uploads/2023/11/gmail.apk" class="card">
+        <div  class="center">
+            <img class="image"style="width: 65px;" src="https://github.com/dd12431/apk/raw/gh-pages/gmail.png" alt="">
+            <p>Gmail חדש</p>
+        </div>
     </a>
-    <p >תנ"ך</p>
+    <a href="https://show-digital.com/wp-content/uploads/2024/01/Google-Messages_messages.android_20240102_00_RC02.phone_dynamic_apkcombo.com_.apk" class="card">
+        <div  class="center">
+            <img class="image"style="width: 65px;" src="https://showhaim.github.io/showstore/Messages.webp" alt="">
+            <p>הודעות גוגל</p>
+        </div>
+    </a>
+    <a  href="https://show-digital.com/wp-content/uploads/2023/11/Keep.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/keep.png" alt="">
+            <p >הערות KEEP</p>
+        </div>
+    </a>
 
-	     <a  href="https://github.com/AshiVered/apny/blob/main/app/harav.apk?raw=true"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://raw.githubusercontent.com/AshiVered/apny/main/icon/harav.png" alt="">
-    </div>
+    <a href="https://show-digital.com/wp-content/uploads/2023/12/com_google_android_apps_docs_editors_docs_v1.23.482.01.90.apk" class="card">
+        <div  class="center">
+            <img class="image"style="width: 65px;" src="https://showhaim.github.io/showstore/docs.png" alt="">
+            <p>Google Docs</p>
+        </div>
     </a>
-    <p >כתבי ראי"ה קוק</p>
-
-	     <a  href="https://show-digital.com/wp-content/uploads/2024/01/AppLock-Master_33.0.2_apkcombo.com_.apk"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://raw.githubusercontent.com/showhaim/showstore/main/applock.png" alt="">
-    </div>
-    </a>
-<p >נועל אפליקציות</p>
-
-	     <a  href="https://show-digital.com/wp-content/uploads/2024/01/mishnayot-kehati_v1.8.9_apkpure.com_.apk"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://raw.githubusercontent.com/showhaim/showstore/main/kehati.png" alt="">
-    </div>
-    </a>
-    <p >משניות הרב קהתי</p>
-
-	     <a  href="samsung.html"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://raw.githubusercontent.com/showhaim/showstore/main/samsung.png" alt="">
-    </div>
-    </a>
-    <p >אפליקציות להתקני Samsung</p>
-
-	     <a  href="https://show-digital.com/wp-content/uploads/2024/01/אימות-דו-שלבי-and-OTP.apk"> 
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://raw.githubusercontent.com/showhaim/showstore/main/otp.png" alt="">
-    </div>
-    </a>
-    <p >AndOTP אימות דו שלבי</p>
-	     <a  href="https://show-digital.com/wp-content/uploads/2024/01/JBL.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/jbl.png" alt="">
-    </div>
-    </a>
-    <p >אוזניות JBL</p>
-
-	     <a  href="https://show-digital.com/wp-content/uploads/2024/01/il_co_hamichlol_v1.2.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/hamichlol.png" alt="">
-    </div>
-    </a>
-    <p >המכלול</p>
-
-	     <a  href="https://show-digital.com/wp-content/uploads/2024/01/מחשבוןמעשרות_1.7_apkcombo.com_.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/massrot.png" alt="">
-    </div>
-    </a>
-    <p >מחשבון מעשרות</p>
-
-	     <a  href="https://show-digital.com/wp-content/uploads/2024/01/org_hebrewbooks_mobile_v0.2.1.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/hebrewbooks.png" alt="">
-    </div>
-    </a>
-    <p >היברובוקס</p>
-
-	     <a  href="https://show-digital.com/wp-content/uploads/2024/01/עמוד-ענן-מסלולים.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/עמוד ענן.png" alt="">
-    </div>
-    </a>
-    <p >עמוד ענן</p>
-
-	     <a  href="https://show-digital.com/wp-content/uploads/2024/01/mitmachim_top_v2.8.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/מתמחים.webp" alt="">
-    </div>
-    </a>
-    <p >מתמחים טופ</p>
-	     <a  href="https://show-digital.com/wp-content/uploads/2024/02/rakevet.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/rail.webp" alt="">
-    </div>
-    </a>
-    <p >רכבת ישראל</p>
-
-	     <a  href="https://show-digital.com/wp-content/uploads/2024/02/oyw.dafch_3_26194502.apk">
-  <div class="center">
-       <img class="cente" style="width: 65px;" src="https://showhaim.github.io/showstore/shas.webp" alt="">
-    </div>
-    </a>
-    <p >גמרא מבוארת</p>
 
 
+    <a href="https://show-digital.com/wp-content/uploads/2023/12/com.google.android.apps_.docs_.editors.sheets_1.23.462.02.90-220600924_minAPI26arm64-v8aarmeabi-v7ax86x86_64nodpi_apkmirror.com_.apk" class="card">
+        <div  class="center">
+            <img class="image"style="width: 65px;" src="https://showhaim.github.io/showstore/sheets.png" alt="">
+            <p>Google Sheets</p>
+        </div>
+    </a>
+
+
+    <a href="https://show-digital.com/wp-content/uploads/2023/12/com.google.android.apps_.docs_.editors.slides_1.23.462.04.90-220600088_minAPI26arm64-v8aarmeabi-v7ax86x86_64nodpi_apkmirror.com_.apk" class="card">
+        <div  class="center">
+            <img class="image"style="width: 65px;" src="https://showhaim.github.io/showstore/slides.png" alt="">
+            <p>Google Slides</p>
+        </div>
+    </a>
+
+
+
+    <a href="https://show-digital.com/wp-content/uploads/2023/12/com.google.android.calendar_2023.50.1-592177658-release-2017303236_minAPI26nodpi_apkmirror.com_.apk" class="card">
+        <div  class="center">
+            <img class="image"style="width: 65px;" src="https://showhaim.github.io/showstore/calendar.png" alt="">
+            <p>יומן Google</p>
+        </div>
+    </a>
+
+
+    <a  href="https://show-digital.com/wp-content/uploads/2023/12/googletranslete.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/translate.png" alt="">
+            <p >תרגום</p>
+        </div>
+    </a>
+
+
+
+    <a  href="https://show-digital.com/wp-content/uploads/2023/12/app-debug.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/orechTagit.png" alt="">
+            <p >ניהול חשבונות גוגל</p>
+        </div>
+    </a>
+
+
+    <a  href="https://show-digital.com/wp-content/uploads/2024/01/googlecontacts.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/gcontacts.png" alt="">
+            <p >אנשי קשר Google</p>
+        </div>
+    </a>
+
+
+
+
+</div>
+
+    <div class="header-container">
+        <div class="header" id="header4">
+            <img src="https://w7.pngwing.com/pngs/803/536/png-transparent-musical-note-icon-music-angle-white-text-thumbnail.png" style="height: 24px; vertical-align: middle; margin-right: 8px;">
+            מוזיקה
+        </div>
+    </div>
+<div class="container">
+    <a  href="https://show-digital.com/wp-content/uploads/2024/01/musicolet.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/HJ.jpeg" alt="">
+            <p >נגן Musicolet</p>
+        </div>
+    </a>
+    <a  href="https://show-digital.com/wp-content/uploads/2024/01/JBL.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/jbl.png" alt="">
+            <p >אוזניות JBL</p>
+        </div>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    <div class="header-container">
+        <div class="header" id="header3">
+            <img src="https://cdn.iconscout.com/icon/free/png-512/free-bank-icon-download-in-svg-png-gif-file-formats--building-structure-depository-home-money-savings-central-finance-and-tax-pack-business-icons-1201209.png?f=webp&w=256" style="height: 24px; vertical-align: middle; margin-right: 8px;">
+            בנקים
+        </div>
+    </div>
+    <div class="container">
+<a href="https://show-digital.com/wp-content/uploads/2024/01/Discount-Bank_75.0.1_apkcombo.com_.apk" class="card">
+    <div  class="center">
+        <img class="image"style="width: 65px;" src="https://showhaim.github.io/showstore/bank.png" alt="">
+        <p>בנק דיסקונט</p>
+    </div>
+</a>
+
+
+<a href="https://show-digital.com/wp-content/uploads/2024/01/בנק-הפועלים-ניהול-החשבון_42.2.0_apkcombo.com_.apk" class="card">
+    <div  class="center">
+        <img class="image"style="width: 65px;" src="https://showhaim.github.io/showstore/bank.png" alt="">
+        <p>בנק הפועלים</p>
+    </div>
+</a>
+
+
+<a  href="https://onedrive.live.com/download?cid=A50ECA20D011DDA4&resid=A50ECA20D011DDA4%21164&authkey=AEspohQt3kq9pHE" class="card">
+    <div class="content">
+        <img class="image" style="width: 65px;" src="https://meirtorj.xyz/update/picture/pagi-Bank.png" alt="">
+        <p >בנק פאגי</p>
+    </div>
+</a>
+
+<a  href="https://dd12431.github.io/application/Yahav-bank.apk" class="card">
+    <div class="content">
+        <img class="image" style="width: 65px;" src="https://meirtorj.xyz/update/picture/Yahav-bank.png" alt="">
+        <p >בנק יהב</p>
+    </div>
+</a>
+
+
+    </div>
+    <div class="header-container">
+        <div class="header" id="header6">
+            <img src="https://static.vecteezy.com/system/resources/thumbnails/002/219/582/small_2x/illustration-of-book-icon-free-vector.jpg" style="height: 24px; vertical-align: middle; margin-right: 8px;">
+            ספרי קודש
+        </div>
+    </div>
+<div class="container">
+<a  href="https://dd12431.github.io/apk/yesod.apk" class="card">
+    <div class="content">
+        <img class="image" style="width: 65px;" src="https://dd12431.github.io/apk/yesod.jpg" alt="">
+        <p>ספרי קודש</p>
+    </div>
+</a>
+
+    <a  href="https://show-digital.com/wp-content/uploads/2023/12/תמנידור-1.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/temanidur.png" alt="">
+            <p >תמנידור</p>
+        </div>
+    </a>
+    <a  href="https://show-digital.com/wp-content/uploads/2024/02/oyw.dafch_3_26194502.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/shas.webp" alt="">
+            <p >גמרא מבוארת</p>
+        </div>
+    </a>
+<a  href="https://show-digital.com/wp-content/uploads/2024/01/mslsh.apk" class="card">
+    <div class="content">
+        <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/mslsh.png" alt="">
+        <p>ספר מסילת ישרים</p>
+    </div>
+</a>
+
+
+<a  href="https://show-digital.com/wp-content/uploads/2024/01/תנך.apk" class="card">
+    <div class="content">
+        <img class="image" style="width: 65px;" src="bible.png" alt="">
+        <p >תנ"ך</p>
+    </div>
+</a>
+
+
+<a  href="https://github.com/AshiVered/apny/blob/main/app/harav.apk?raw=true" class="card">
+    <div class="content">
+        <img class="image" style="width: 65px;" src="https://raw.githubusercontent.com/AshiVered/apny/main/icon/harav.png" alt="">
+        <p >כתבי ראי"ה קוק</p>
+    </div>
+</a>
+
+
+
+
+<a  href="https://show-digital.com/wp-content/uploads/2024/01/mishnayot-kehati_v1.8.9_apkpure.com_.apk" class="card">
+    <div class="content">
+        <img class="image" style="width: 65px;" src="https://raw.githubusercontent.com/showhaim/showstore/main/kehati.png" alt="">
+        <p >משניות הרב קהתי</p>
+    </div>
+</a>
+</div>
+    <div class="header-container">
+        <div class="header" id="header2">
+            <img src="https://icons.veryicon.com/png/o/miscellaneous/customer-service-icon-library/add-more.png" style="height: 24px; vertical-align: middle; margin-right: 8px;">
+            תוספים לטלפון
+        </div>
+    </div>
+<div class="container">
+
+    <a  href="https://show-digital.com/wp-content/uploads/2024/01/AppLock-Master_33.0.2_apkcombo.com_.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://raw.githubusercontent.com/showhaim/showstore/main/applock.png" alt="">
+            <p >נועל אפליקציות</p>
+        </div>
+    </a>
+    <a  href="https://show-digital.com/wp-content/uploads/2024/01/1-sigen.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/מסיר-אפליקציות.png" alt="">
+            <p >מסיר אפליקציות</p>
+        </div>
+    </a>
+    <a  href="https://onedrive.live.com/download?cid=A50ECA20D011DDA4&resid=A50ECA20D011DDA4%21165&authkey=AMKJpmEssuO_6X4" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://meirtorj.xyz/update/picture/meuhedet.png" alt="">
+            <p >מאוחדת</p>
+        </div>
+    </a>
+    <a  href="https://show-digital.com/wp-content/uploads/2023/11/teoria.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/teoria.png" alt="">
+            <p >נוהג</p>
+        </div>
+    </a>
+    <a  href="https://show-digital.com/wp-content/uploads/2023/12/mishlo.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/mishlo.png" alt="">
+            <p >מעקב משלוחים</p>
+        </div>
+    </a>
+
+    <a  href="https://show-digital.com/wp-content/uploads/2023/11/meiaveAnsheiKesher.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/meyaveAnshiKesher.png" alt="">
+            <p >ייבוא אנש"ק בבלוטוס</p>
+        </div>
+    </a>
+
+    <a href="https://show-digital.com/wp-content/uploads/2024/01/Iris-mini_1.0.5_apkcombo.com_.apk" class="card">
+        <div  class="center">
+            <img class="image"style="width: 65px;" src="https://showhaim.github.io/showstore/iris.png" alt="">
+            <p>Iris mini מסנן אור כחול</p>
+        </div>
+    </a>
+    <a  href="https://show-digital.com/wp-content/uploads/2023/12/הסרטת-מסך-.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/מסך.jpeg" alt="">
+            <p >הסרטת מסך</p>
+        </div>
+    </a>
+    <a  href="https://show-digital.com/wp-content/uploads/2024/01/עמוד-ענן-מסלולים.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/עמוד ענן.png" alt="">
+            <p >עמוד ענן</p>
+        </div>
+    </a>
+
+
+    <a  href="https://show-digital.com/wp-content/uploads/2024/01/mitmachim_top_v2.8.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/מתמחים.webp" alt="">
+            <p >מתמחים טופ</p>
+        </div>
+    </a>
+
+    <a  href="https://show-digital.com/wp-content/uploads/2023/12/pdf.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/pdf.png" alt="">
+            <p >PDF</p>
+        </div>
+    </a>
+
+
+    <a  href="https://show-digital.com/wp-content/uploads/2023/12/wps.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/wps.png" alt="">
+            <p >אופיס</p>
+        </div>
+    </a>
+
+
+    <a  href="https://show-digital.com/wp-content/uploads/2024/01/app-release.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/onscreen.png" alt="">
+            <p>מקלדת על המסך</p>
+        </div>
+    </a>
+    <a  href="https://show-digital.com/wp-content/uploads/2023/12/redalert.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/redalert.png" alt="">
+            <p >צבע אדום</p>
+        </div>
+    </a>
+    <a href="https://show-digital.com/wp-content/uploads/2023/12/קיצורי-מקשים-1-2.apk" class="card">
+        <div  class="center">
+            <img class="image"style="width: 65px;" src="https://showhaim.github.io/showstore/buttons.png" alt="">
+            <p>קיצורי מקשים</p>
+        </div>
+    </a>
+
+    <a  href="https://apk.truecaller.com/truecaller.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/truecaller.png" alt="">
+            <p >TrueCaller זיהוי שיחות</p>
+        </div>
+    </a>
+<a  href="samsung.html" class="card">
+    <div class="content">
+        <img class="image" style="width: 65px;" src="https://raw.githubusercontent.com/showhaim/showstore/main/samsung.png" alt="">
+        <p >אפליקציות להתקני Samsung</p>
+    </div>
+</a>
+
+
+<a  href="https://show-digital.com/wp-content/uploads/2024/01/אימות-דו-שלבי-and-OTP.apk" class="card">
+    <div class="content">
+        <img class="image" style="width: 65px;" src="https://raw.githubusercontent.com/showhaim/showstore/main/otp.png" alt="">
+        <p >AndOTP אימות דו שלבי</p>
+    </div>
+</a>
+
+
+
+<a  href="https://show-digital.com/wp-content/uploads/2024/01/il_co_hamichlol_v1.2.apk" class="card">
+    <div class="content">
+        <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/hamichlol.png" alt="">
+        <p >המכלול</p>
+    </div>
+</a>
+
+
+<a  href="https://show-digital.com/wp-content/uploads/2024/01/מחשבוןמעשרות_1.7_apkcombo.com_.apk" class="card">
+    <div class="content">
+        <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/massrot.png" alt="">
+        <p >מחשבון מעשרות</p>
+    </div>
+</a>
+
+
+<a  href="https://show-digital.com/wp-content/uploads/2024/01/org_hebrewbooks_mobile_v0.2.1.apk" class="card">
+    <div class="content">
+
+        <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/hebrewbooks.png" alt="">
+        <p >היברובוקס</p>
+    </div>
+</a>
+
+
+
+</div>
+    <div class="header-container">
+        <div class="header" id="header5">
+            <img src="https://www.iconpacks.net/icons/2/free-car-icon-2897-thumb.png" style="height: 24px; vertical-align: middle; margin-right: 8px;">
+            נסיעות
+        </div>
+    </div>
+<div class="container">
+<a  href="https://show-digital.com/wp-content/uploads/2024/02/rakevet.apk" class="card">
+    <div class="content">
+        <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/rail.webp" alt="">
+        <p >רכבת ישראל</p>
+    </div>
+</a>
+    <a  href="https://show-digital.com/wp-content/uploads/2024/01/Moovit_5.107.0.560_כשר_ללא-פרסומות.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://github.com/dd12431/apk/raw/gh-pages/movit.png" alt="">
+            <p >MOOVIT-מוביט</p>
+        </div>
+    </a>
+    <a href="https://onedrive.live.com/download?resid=E6AC9F8C865CC9DD%213182&authkey=!AJHMydhTDiVpBIU" class="card">
+        <div  class="center">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/net.png" alt="">
+            <p>ניווט ללא אינטרנט</p>
+        </div>
+    </a>
+
+    <a  href="https://show-digital.com/wp-content/uploads/2023/12/Fix-GPS.apk" class="card">
+        <div class="content">
+            <img class="image" style="width: 65px;" src="https://showhaim.github.io/showstore/עוד-מתקן-גי-פי-אס.png" alt="">
+            <p >מתקן GPS</p>
+        </div>
+    </a>
+    <a href="https://show-digital.com/wp-content/uploads/2024/01/Waze.apk" class="card">
+        <div  class="center">
+            <img class="image" style="width: 65px;" src="https://github.com/dd12431/apk/raw/gh-pages/waze.png" alt="">
+            <p >וויז- Waze</p>
+        </div>
+    </a>
+
+
+    <a href="https://show-digital.com/wp-content/uploads/2024/02/פנגו-Pango_11.0603_apkcombo.com_.apk" class="card">
+        <div  class="center">     <img class="image" style="width: 65px;" src="https://github.com/dd12431/apk/raw/gh-pages/pango.webp" alt="">
+            <p >פנגו (להסיר את הקודם)</p>
+        </div>
+    </a>
+</div>
+<dialog id="myDialog">
+    <span class="closebtn" onclick="selectOption('0')">&times;</span>
+    <button onclick="selectOption('1')">משוב</button>
+    <button onclick="selectOption('2')">רענון</button>
+    <button onclick="selectOption('3')">אודות</button>
+</dialog>
+
+<dialog id="infoDialog">
+    <pp>חברת SHOW הוקמה בשנת 2020 ומתמחה בייצור פיתוח וייבוא אלקטרוניקה ותקשורת מתקדמים ואיכותיים תוך שמירה על מחירים סבירים לצרכן.</pp>
+    <pp>תהליך הפיתוח והייצור נעשה תוך שימת דגש על חומרי גלם איכותיים ועמידים וכן דגש מיוחד בתוכנה שתהיה ידידותית ללא תקלות ובאגים ככל האפשר.</pp>
+    <button onclick="closeInfoDialog()">סגור</button>
+</dialog>
+<dialog id="loadingDialog">
+    <pp>טוען... אנא המתן</pp>
+</dialog>
+<dialog id="categoriesDialog">
+    <span class="closebtn" onclick="closeCategoriesDialog()">&times;</span>
+    <ul id="categoriesList"></ul>
+    </dialog>
+
+<script>
+    function openDialog() {
+      document.body.style.overflow = 'hidden'; // חוסם גלילה
+      const dialog = document.getElementById('myDialog');
+      dialog.showModal();
+
+      // התאמת מיקום הדיאלוג
+      const rect = dialog.getBoundingClientRect();
+      if (rect.top < 0) {
+          window.scrollTo(0, rect.top);
+      }
+      if (rect.bottom > window.innerHeight) {
+          window.scrollTo(0, rect.bottom - window.innerHeight);
+      }
+  }
+
+
+       function closeDialog() {
+           document.body.style.overflow = 'auto';
+           document.getElementById('myDialog').close();
+       }
+
+
+           function openInfoDialog() {
+               document.getElementById('infoDialog').showModal();
+           }
+
+           function closeInfoDialog() {
+               document.getElementById('infoDialog').close();
+           }
+
+
+
+           function openDialog() {
+               document.getElementById('myDialog').showModal();
+           }
+
+           function closeDialog() {
+               document.getElementById('myDialog').close();
+           }
+
+           function openInfoDialog() {
+               document.getElementById('infoDialog').showModal();
+           }
+
+           function closeInfoDialog() {
+               document.getElementById('infoDialog').close();
+           }
+
+           function selectOption(optionText) {
+               closeDialog();
+               if (optionText === '1') {
+                   showLoadingDialog(); // הצגת דיאלוג ההמתנה
+                   setTimeout(function() {
+                       window.location.href = 'https://docs.google.com/forms/d/e/1FAIpQLScFUNx7hfahgA13iY8wjdrSjDuOzqczVgmIBjXkLYiiM_6vxQ/viewform';
+                   }, 1000); // להמתין שניה לפני העברת הדף
+               } else if (optionText === '2') {
+                   location.reload();
+               } else if (optionText === '3') {
+                   openInfoDialog();
+               }
+           }
+       function populateCategoriesList() {
+           const categoriesList = document.getElementById('categoriesList');
+           const headers = document.querySelectorAll('.header-container .header');
+
+           // נקה את הרשימה הקיימת
+           categoriesList.innerHTML = '';
+
+           headers.forEach(header => {
+               const categoryId = header.id;
+               const categoryName = header.textContent.trim();
+
+               const listItem = document.createElement('li');
+               const button = document.createElement('button');
+               button.textContent = categoryName;
+               button.onclick = () => scrollToCategory(categoryId);
+
+               listItem.appendChild(button);
+               categoriesList.appendChild(listItem);
+           });
+       }
+
+       function openCategoriesDialog() {
+           populateCategoriesList();
+           document.getElementById('categoriesDialog').showModal();
+       }
+
+       function closeCategoriesDialog() {
+           document.getElementById('categoriesDialog').close();
+       }
+
+       function scrollToCategory(headerId) {
+           const header = document.getElementById(headerId);
+           if (header) {
+               header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+               closeCategoriesDialog();
+           }
+       }
+
+
+           function showLoadingDialog() {
+               document.getElementById('loadingDialog').showModal();
+           }
+
+           window.addEventListener('load', function() {
+               // סגירת דיאלוג ההמתנה ברגע שהדף נטען
+               if (document.getElementById('loadingDialog').open) {
+                   document.getElementById('loadingDialog').close();
+               }
+           });
+       let showOnlyTitles = true;
+       let currentCategory = null;
+
+       function showTitles() {
+           const containers = document.querySelectorAll('.container');
+           const headers = document.querySelectorAll('.header-container');
+           const button = document.querySelector('.titles-button');
+
+           if (showOnlyTitles) {
+               // Hide all containers and show only headers
+               containers.forEach(container => container.style.display = 'none');
+               headers.forEach(header => {
+                   header.style.display = 'block';
+                   header.onclick = () => {
+                       showContent(header.querySelector('.header').id);
+                   };
+               });
+               button.innerText = 'הצג הכל';
+               button.classList.remove('disabled'); // Enable button
+               currentCategory = null;
+           } else {
+               // Show all content
+               containers.forEach(container => container.style.display = 'grid');
+               headers.forEach(header => header.style.display = 'block');
+               button.innerText = 'קטגוריות';
+               button.classList.add('disabled'); // Disable button
+               currentCategory = null;
+           }
+           showOnlyTitles = !showOnlyTitles;
+       }
+
+       function showContent(headerId) {
+           const containers = document.querySelectorAll('.container');
+           const headers = document.querySelectorAll('.header-container');
+           const button = document.querySelector('.titles-button');
+
+           if (currentCategory === headerId) {
+               // If clicking the same category, show all categories
+               containers.forEach(container => container.style.display = 'grid');
+               headers.forEach(header => header.style.display = 'block');
+               button.innerText = 'קטגוריות';
+               button.classList.remove('disabled'); // Enable button
+               currentCategory = null;
+               showOnlyTitles = false;
+           } else {
+               // Hide all containers and headers
+               containers.forEach(container => container.style.display = 'none');
+               headers.forEach(header => header.style.display = 'none');
+
+               // Show only the selected category
+               const selectedHeader = document.getElementById(headerId).closest('.header-container');
+               const selectedContainer = selectedHeader.nextElementSibling;
+
+               selectedHeader.style.display = 'block';
+               selectedContainer.style.display = 'grid';
+
+               button.innerText = 'קטגוריות';
+               button.classList.remove('disabled'); // Enable button
+               currentCategory = headerId;
+               showOnlyTitles = false;
+           }
+
+           // Scroll to the selected header
+           document.getElementById(headerId).scrollIntoView({ behavior: 'smooth' });
+       }
+
+       // Updated search function
+       document.querySelector('.search-input').addEventListener('input', function () {
+           const searchValue = this.value.toLowerCase();
+           const cards = document.querySelectorAll('.card');
+           const headers = document.querySelectorAll('.header-container');
+           const containers = document.querySelectorAll('.container');
+           const button = document.querySelector('.titles-button');
+
+           // Reset all settings
+           showOnlyTitles = false;
+           currentCategory = null;
+           button.innerText = 'קטגוריות';
+
+           // Show all headers and containers
+           headers.forEach(header => header.style.display = 'block');
+           containers.forEach(container => container.style.display = 'grid');
+
+           if (searchValue) {
+               headers.forEach(header => {
+                   let relevantCards = 0;
+                   const container = header.nextElementSibling;
+                   const cardsInContainer = container.querySelectorAll('.card');
+
+                   cardsInContainer.forEach(card => {
+                       const text = card.querySelector('p').textContent.toLowerCase();
+                       if (text.includes(searchValue)) {
+                           card.style.display = 'block';
+                           relevantCards++;
+                       } else {
+                           card.style.display = 'none';
+                       }
+                   });
+
+                   header.style.display = relevantCards > 0 ? 'block' : 'none';
+                   container.style.display = relevantCards > 0 ? 'grid' : 'none';
+               });
+           } else {
+               // If search is empty, show everything
+               cards.forEach(card => card.style.display = 'block');
+           }
+       });
+</script>
 </body>
 </html>
-
